@@ -4,8 +4,9 @@ import { fetchPosts } from '../actions/index';
 import { Link } from 'react-router-dom';
 
 class PostsIndex extends Component {
+    // call after the first time component renders
     componentDidMount() {
-        this.props.fetchPosts();
+        this.props.fetchPosts(); // call action creator -> action -> reducer
     }
 
     renderPosts() {
@@ -22,6 +23,7 @@ class PostsIndex extends Component {
         return (
             <div>
                 <div className="text-xs-right">
+                    {/* think of <Link /> as <a />*/}
                     <Link className="btn btn-primary" to="/posts/new">
                         Add a Post
                     </Link>
@@ -35,10 +37,10 @@ class PostsIndex extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state) { // after this.props.fetchPosts called posts from reducers is populated map to to prop.posts
     return {
         posts: state.posts
     };
 }
 
-export default connect(mapStateToProps, { fetchPosts })(PostsIndex);
+export default connect(mapStateToProps, { fetchPosts })(PostsIndex); // action creator shortcut same as adding mapDispatchToProps function
