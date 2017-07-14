@@ -6,8 +6,11 @@ import { Field, reduxForm } from 'redux-form'; // think of refuxForm as connect 
 class PostsNew extends Component {
     // pristine: clean state, touched: user focuses in then fouces out(dirty state), invalid: error
     renderField(field) {
+        const { meta: {touched, error} } = field; // destructor from field.meta.touched & field.meta.error
+        const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
         return (
-            <div className="form-group">
+            <div className={className}>
                 <label>{field.label}</label>
                 <input
                     className="form-control"
@@ -15,7 +18,9 @@ class PostsNew extends Component {
                     {...field.input}
                 />
                 {/*handles validation - to show error if any*/}
-                {field.meta.touched ? field.meta.error : ''}
+                <div className="text-help">
+                    {touched ? error : ''}
+                </div>
             </div>
         )
     }
