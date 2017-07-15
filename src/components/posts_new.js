@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form'; // think of refuxForm as connect in redux
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions/index';
 
 // redux-form only manages states/data & we have to show markup/jsx
 
 class PostsNew extends Component {
+    constructor(props) {
+        super(props);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
     // pristine: clean state, touched: user focuses in then fouces out(dirty state), invalid: error
     renderField(field) {
         const { meta: {touched, error} } = field; // destructor from field.meta.touched & field.meta.error
@@ -26,7 +34,9 @@ class PostsNew extends Component {
     }
 
     onSubmit(values) {
-        console.log(values);
+        this.props.createPost(values, () =>
+            this.props.history.push('/')
+        );
     }
 
     render() {
@@ -52,6 +62,7 @@ class PostsNew extends Component {
                     component={this.renderField}
                 />
                 <button type="submit" className="btn btn-primary">Submit</button>
+                <Link to="/" className="btn btn-danger">Cancel</Link>
             </form>
         )
     }
@@ -77,4 +88,15 @@ function validate(values) {
 export default reduxForm({ // pass in config
     validate, // {validate : validate}
     form: 'PostsNewform' // need to be uniq
-})(PostsNew);
+})(
+    connect(null, { createPost })(PostsNew)
+);
+
+/*
+submit flow:
+1) user submits form
+2) validate form
+3) call 'onSubmit'
+4) call an action creator to make API request
+5) after success, navigate user back to post list
+ */

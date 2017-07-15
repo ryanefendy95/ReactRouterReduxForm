@@ -17,7 +17,7 @@ ReactDOM.render(
       <BrowserRouter>
           <div>
               <Switch>
-                  <Route path={'/posts/new'} render={() => {return <PostsNew/>}}/>
+                  <Route path={'/posts/new'} render={({ history }) => {return <PostsNew history={history}/>}}/>
                   <Route exact path={'/'} render={() => {return <PostsIndex/>}}/>
               </Switch>
           </div>
